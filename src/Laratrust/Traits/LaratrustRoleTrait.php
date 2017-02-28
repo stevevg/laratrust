@@ -71,7 +71,7 @@ trait LaratrustRoleTrait
             $role->flushCache();
             return true;
         };
-        
+
         // If the role doesn't use SoftDeletes
         if (method_exists(Config::get('laratrust.role'), 'restored')) {
             static::restored($flushCache);
@@ -87,7 +87,7 @@ trait LaratrustRoleTrait
             }
         });
     }
-    
+
     /**
      * Checks if the role has a permission by its name.
      *
@@ -127,14 +127,14 @@ trait LaratrustRoleTrait
     /**
      * Save the inputted permissions.
      *
-     * @param mixed $inputPermissions
+     * @param mixed $permissions
      *
      * @return array
      */
-    public function savePermissions($inputPermissions)
+    public function savePermissions($permissions)
     {
-        // If the inputPermissions ist empty it will delete all associations
-        $changes = $this->permissions()->sync($inputPermissions);
+        // If the permissions is empty it will delete all associations
+        $changes = $this->permissions()->sync($permissions);
         $this->flushCache();
 
         return $changes;

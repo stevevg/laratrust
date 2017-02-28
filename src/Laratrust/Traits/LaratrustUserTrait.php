@@ -27,10 +27,7 @@ trait LaratrustUserTrait
         $cacheKey = 'laratrust_roles_for_user_' . $this->getKey();
 
         return Cache::remember($cacheKey, Config::get('cache.ttl', 60), function () {
-            $roles = $this->roles()->get()->each(function ($role) {
-                unset($role->relations);
-            });
-            return $roles;
+            return $this->roles()->get();
         });
     }
 
@@ -300,7 +297,7 @@ trait LaratrustUserTrait
         if (!$roles) {
             $roles = $this->roles()->get();
         }
-        
+
         foreach ($roles as $role) {
             $this->detachRole($role);
         }
@@ -324,11 +321,12 @@ trait LaratrustUserTrait
     /**
      * Checks if the user owns the thing
      * @param  Model $thing
+     * @param  string $foreignKeyName
      * @return boolean
      */
-    public function owns($thing)
+    public function owns($thing, $foreignKeyName = null)
     {
-        $foreignKeyName = snake_case(get_class($this). 'Id');
+        $foreignKeyName = $foreignKeyName ?: snake_case(get_class($this). 'Id');
 
         return $thing->$foreignKeyName == $this->getKey();
     }
